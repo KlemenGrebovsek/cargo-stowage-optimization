@@ -25,7 +25,6 @@ class Runner(object):
             :return A tuple, containing optimization results with given algorithm ( algorithm name, fitness, solution,
              execution time)
         """
-
         try:
             alg_type = globals()[str(alg_t)]
             alg_obj = alg_type(seed=random.randint(1, 9999), task=Task(D=sim_sett.pack_count, nFES=n_fes,

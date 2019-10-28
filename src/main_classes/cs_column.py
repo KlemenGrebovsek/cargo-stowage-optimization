@@ -19,13 +19,14 @@ class Column(object):
         """Returns size of column.
         :return An integer, indicating maximum number of packages in column.
         """
+
         return len(self.packages)
 
     def push(self, package: Package):
         """Adds package into column.
         :param package: An object of type Package, indicating package that will be added in column after last package.
-        :return /
         """
+
         self.packages[self.package_count] = package
         self.package_count += 1
         self.weight += package.weight
@@ -34,6 +35,7 @@ class Column(object):
         """Returns the most upper package in column.
         :return Package
         """
+
         self.package_count -= 1
         self.weight -= self.packages[self.package_count].weight
         return self.packages[self.package_count]
@@ -45,6 +47,7 @@ class Column(object):
                         index 0 -> An array of packages representing waiting que,
                         index 1 -> An integer representing number of movements
         """
+
         wait_que, mov_sum, wait_que_act = [], 0, False
 
         for i in range(self.package_count):

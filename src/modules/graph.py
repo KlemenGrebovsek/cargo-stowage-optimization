@@ -16,6 +16,7 @@ class Graph(object):
         :param results: A list, indicating results of optimization with EA.
         :param path: A string, indicating relative path of save folder.
         """
+
         try:
             print('Saving graph in graph.png')
             names = [x[0] for x in results]

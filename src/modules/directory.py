@@ -14,6 +14,7 @@ class Directory(object):
         """Creates new directory where results will be saved.
         :return A string, indicating relative path to created folder.
         """
+
         try:
             path = '../Results/%s' % datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
             os.mkdir(path)

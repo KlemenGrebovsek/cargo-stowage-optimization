@@ -29,14 +29,16 @@ def create_new_dataset(ds_name: str, pack_c: int, stat_n: int, cargo_s_w: int, c
      :param cargo_s_w: An integer, indicating cargo space width (min = 5).
      :param cargo_s_h: An integer, indicating cargo space height (min = 5).
     """
+
     print(File.generate_new_data_set(ds_name, pack_c, stat_n, cargo_s_w, cargo_s_h))
 
 
 def run_optimization():
     """Starts optimization and stores results according to the settings you specify.
     """
+
     sim_sett = File.read_data_set(DATA_SET_NAME)
-    if sim_sett:
+    if sim_sett.ds_name != ' ':
         print('Starting optimization.')
         func = partial(Runner.run, sim_sett=sim_sett, n_fes=NUMBER_OF_EVALUATIONS, np=POPULATION_SIZE)
         opt_res = Pool().map(func, ALGORITHM_LIST)

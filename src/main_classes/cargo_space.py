@@ -23,6 +23,7 @@ class CargoSpace(object):
                         index 1 -> A list, indicating packages layout distribution in cargo space.
                         index 2 -> A list, indicating weight distribution in cargo space.
         """
+
         movements_sum, wait_que, lay_sum_de = 0, [], np.zeros(len(self.columns), dtype=int)
 
         # Simulates process of unloading packages for specified station.

@@ -19,6 +19,7 @@ class ImageViz(object):
          :param path: A string, representing relative path of save folder.
          :param res: A List, containing results of simulation.
         """
+
         best_sol = min(res, key=lambda x: x[1])
         print('Saving best solution visualization in %s.gif' % best_sol[0])
         img_arr = ImageViz._simulate_route(sim_sett, best_sol)
@@ -31,6 +32,7 @@ class ImageViz(object):
         :param res: A List, containing results of simulation.
         :return A List of images, each image visualizes cargo space at specific station.
         """
+
         total_p_movements, sol_index, total_lay_ds, total_we_ds = 0, 0, 0, 0
         cargo_space = CargoSpace(width=sim_sett.cs_width, height=sim_sett.cs_height)
         min_p_we, max_p_we = 101, 0
@@ -87,6 +89,7 @@ class ImageViz(object):
         :param col_w: An Integer, representing height of a cargo storage column.
         :param we_grp: A Tuple representing the distribution of the weight of packets into classes.
         """
+
         reset_x = cord_x
         cs_sum_we = sum(col_w)
 
@@ -114,6 +117,7 @@ class ImageViz(object):
         :param col_we: An Integer, representing a weight of a selected column in cargo space.
         :return An integer representing the weight of the column as a percentage of the weight of the storage space.
         """
+
         if total_w == 0 or col_we == 0:
             return 0
         return round((100 * col_we) / total_w)

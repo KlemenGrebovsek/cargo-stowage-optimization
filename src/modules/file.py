@@ -64,7 +64,6 @@ class File(object):
         """
 
         print('Reading data set.')
-
         try:
             with open('../Datasets/%s.csv' % ds_name, mode='r') as f:
                 reader = csv.reader(f, delimiter=',')
@@ -75,12 +74,12 @@ class File(object):
                     packages[int(row[1]) - 1].append(Package(int(row[0]), int(row[2]), int(row[3])))
             if pack_c != sum(len(i) for i in packages):
                 print('Dataset validation failed.')
-                return SimulationSettings(0, 0, 0, 0, 0, 'asdasd')
+                return SimulationSettings(0, 0, 0, 0, 0, ' ')
         except IOError:
             print('Dataset %s does not exists.' % ds_name)
         except Exception as ex:
             print('Unexpected error: %s' % str(ex))
-            return SimulationSettings(0, 0, 0, 0, 0, 'asdasd')
+            return SimulationSettings(0, 0, 0, 0, 0, ' ')
 
         return SimulationSettings(pack_c, packages, stat_n, car_pac_wi, car_pac_wi, ds_name)
 
@@ -93,6 +92,7 @@ class File(object):
          :param n_fes: An integer, indicating number of evaluations per algorithm.
          :param sim_settings: An object, indicating optimization settings.
         """
+
         print('Saving results in simInfo.txt.')
         try:
             with open('%s/simInfo.txt' % path, 'w') as wr:
