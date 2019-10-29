@@ -57,10 +57,10 @@ class ImageViz(object):
 
         # Drawing cluster.
         for station in range(1, sim_sett.station_n, 1):
-            stat_image = Image.new('RGB', ((sim_sett.cs_width * 75) + (5 * sim_sett.cs_width) + 30,
-                                           ((sim_sett.cs_height * 35) + 50)), color='white')
+            stat_image = Image.new('RGB', ((sim_sett.cs_width * 75) + (5 * sim_sett.cs_width) + 50,
+                                           ((sim_sett.cs_height * 35) + 200)), color='white')
             draw_obj = ImageDraw.Draw(stat_image)
-            x, y = 5, stat_image.height - 65
+            x, y = 10, stat_image.height - 65
             x_line = x + (35 * sim_sett.cs_width) + (5 * sim_sett.cs_width) + 10
             draw_obj.text((x, 15), 'Station number: %s' % station, fill='black',
                           font=ImageFont.truetype('arial.ttf', 20))

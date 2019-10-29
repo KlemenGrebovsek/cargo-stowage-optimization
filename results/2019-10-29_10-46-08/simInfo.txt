@@ -1,0 +1,21 @@
+----Optimization info---- 
+Date: 2019-10-29_10-46-08 
+Algorithms: 6 
+ 
+----Dataset info---- 
+Name : testSet2 
+Number of packages : 70 
+Number of stations : 5 
+Cargo stowage size : 8x8 
+ 
+----EA properties----
+Population size : 50 
+Number of evaluations : 15000 
+ 
+----Optimization results---- 
+ArtificialBeeColonyAlgorithm, Fitness: 4023.0, ExecutionTime : 28.1494 sec 
+FlowerPollinationAlgorithm, Fitness: 5545.0, ExecutionTime : 29.88112 sec 
+GeneticAlgorithm, Fitness: 5117.0, ExecutionTime : 34.54045 sec 
+BatAlgorithm, Fitness: 4299.0, ExecutionTime : 27.35735 sec 
+GreyWolfOptimizer, Fitness: 5051.0, ExecutionTime : 27.49288 sec 
+ParticleSwarmAlgorithm, Fitness: 5241.0, ExecutionTime : 27.19627 sec 

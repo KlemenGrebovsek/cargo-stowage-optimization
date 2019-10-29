@@ -8,10 +8,10 @@ from src.modules.imageViz import ImageViz
 
 
 # Set optimization properties.
-DATA_SET_NAME = 'testSet'
+DATA_SET_NAME = 'testSet2'
 
-POPULATION_SIZE = 100
-NUMBER_OF_EVALUATIONS = 30000
+POPULATION_SIZE = 50
+NUMBER_OF_EVALUATIONS = 15000
 
 SAVE_TO_TXT = True
 CREATE_VISUALIZATION_GIF = True
