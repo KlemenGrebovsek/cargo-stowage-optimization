@@ -4,7 +4,7 @@ import numpy as np
 
 class CargoSpace(object):
 
-    """Class represents a column in cargo space.
+    """Class represents a cargo space.
         Attributes:
             columns: An array, indicating columns in cargo space.
     """

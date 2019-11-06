@@ -1,6 +1,6 @@
 class SimulationSettings(object):
 
-    """Class represents a data set.
+    """Class represents a data set and simulation properties.
     Attributes:
         pack_count: An integer, indicating total number of packages.
         packages_by_station: A list, indicating lists of packages sorted by station of loading.

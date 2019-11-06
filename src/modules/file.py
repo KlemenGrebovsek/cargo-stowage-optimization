@@ -7,8 +7,8 @@ from src.main_classes.simulation_settings import SimulationSettings
 
 class File(object):
 
-    """ Class generates and reads files so-called "data sets" and parses them
-    into specific structures.
+    """ Class generates and reads files so-called "data sets" and parses them into specific structures. It also includes
+     a method which saved optimization results in txt file.
     Attributes:
         Class does not have any attributes.
     """
