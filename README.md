@@ -2,9 +2,7 @@
 
 The idea behind this project was to solve a problem of cargo stowage optimization with help of evolutionary algorithms. In addition to solving a given problem, the solution also offers a comparison of  selected evolutionary algorithms. There are some limitations of this project like 2d representation of cargo space and same dimension of all the pakcages.
 
-<br />
-
-## Requirements
+**Requirements**
  - Python 3.6+
  - Pip
  
@@ -14,8 +12,6 @@ The idea behind this project was to solve a problem of cargo stowage optimizatio
   - pillow
   - matplotlib
   - imageio
-
-<br />
 
 ## Usage
 
@@ -27,7 +23,8 @@ The idea behind this project was to solve a problem of cargo stowage optimizatio
 
 - POPULATION_SIZE -> Indicates population size in evolutionary algorithms (np).
 - NUMBER_OF_EVALUATIONS -> Indicates number of evaluations per solution (nfes)
-- ALGORITHM_LIST -> Indicates algorithms which will be used for solving problem. Link : https://niapy.readthedocs.io/en/1.0.0rc2/api/algorithms.html
+- ALGORITHM_LIST -> Indicates algorithms which will be used for solving problem. 
+Link : https://niapy.readthedocs.io/en/1.0.0rc2/api/algorithms.html
 
 **Output settings**
 
