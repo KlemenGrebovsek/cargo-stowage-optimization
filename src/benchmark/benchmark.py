@@ -54,5 +54,5 @@ class BenchmarkC(object):
                     total_we_ds += abs(w[x] - top_we)
 
             # Return calculated fitness.
-            return int(math.sqrt(total_p_movements * ((total_lay_ds * 4) * total_we_ds)))
+            return int(math.sqrt(total_p_movements * ((total_lay_ds * 4) * total_we_ds))) * 2
         return evaluate

@@ -22,7 +22,7 @@ class File(object):
         :param stat_n: An integer, indicating number of stations.
         :param cargo_s_w: An integer, indicating cargo space width.
         :param cargo_s_h: An integer, indicating cargo space height.
-        :return A string that describes the success of generating a data set, or an error that occurs.
+        :return A tuple that describes the success of generating a data set, or an error that occurs.
         """
 
         err_list = []
@@ -51,16 +51,16 @@ class File(object):
                     st_out = random.randint(2, int(stat_n))
                     writer.writerow([packageCounter, random.randint(1, st_out - 1), st_out, random.randint(1, 99)])
         except IOError as ioe:
-            print('IO exception : %s.' % str(ioe))
+            return 'IO exception : %s.' % str(ioe)
         except Exception as e:
             return str(e)
         return 'Done!'
 
     @staticmethod
-    def read_data_set(ds_name: str) -> SimulationSettings:
+    def read_data_set(ds_name: str) -> tuple:
         """Reads dataset from a csv file and parses data into specific structures.
         :param ds_name: A string, indicating data set name.
-        :return SimulationSettings or None
+        :return A tuple (SimulationSettings, Error)
         """
 
         print('Reading data set.')
@@ -73,15 +73,13 @@ class File(object):
                 for row in reader:
                     packages[int(row[1]) - 1].append(Package(int(row[0]), int(row[2]), int(row[3])))
             if pack_c != sum(len(i) for i in packages):
-                print('Dataset validation failed.')
-                return SimulationSettings(0, 0, 0, 0, 0, ' ')
+                return SimulationSettings(0, 0, 0, 0, 0, ' '), 'Dataset validation failed.'
         except IOError:
             print('Dataset %s does not exists.' % ds_name)
         except Exception as ex:
-            print('Unexpected error: %s' % str(ex))
-            return SimulationSettings(0, 0, 0, 0, 0, ' ')
+            return SimulationSettings(0, 0, 0, 0, 0, ' '), 'Unexpected error: %s' % str(ex)
 
-        return SimulationSettings(pack_c, packages, stat_n, car_pac_wi, car_pac_wi, ds_name)
+        return SimulationSettings(pack_c, packages, stat_n, car_pac_wi, car_pac_wi, ds_name), None
 
     @staticmethod
     def save_to_txt(path: str, res: list, np: int, n_fes: int, sim_settings: SimulationSettings):
