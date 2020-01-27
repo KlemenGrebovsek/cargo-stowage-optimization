@@ -7,20 +7,6 @@ from src.modules.graph import Graph
 from src.modules.imageViz import ImageViz
 
 
-# Set optimization properties.
-DATA_SET_NAME = 'testSet2'
-
-POPULATION_SIZE = 100
-NUMBER_OF_EVALUATIONS = 20000
-
-SAVE_TO_TXT = True
-CREATE_VISUALIZATION_GIF = True
-CRATE_COMPARISON_GRAPH = True
-
-ALGORITHM_LIST = ['ArtificialBeeColonyAlgorithm', 'FlowerPollinationAlgorithm', 'GeneticAlgorithm', 'BatAlgorithm',
-                  'GreyWolfOptimizer', 'ParticleSwarmAlgorithm', 'FireflyAlgorithm', 'HybridBatAlgorithm']
-
-
 def create_new_dataset(ds_name: str, pack_c: int, stat_n: int, cargo_s_w: int, cargo_s_h: int):
     """Calls a function in module File which generates new data set or returns logical errors if any.
      :param ds_name: A string, indicating data set name.
@@ -35,20 +21,35 @@ def create_new_dataset(ds_name: str, pack_c: int, stat_n: int, cargo_s_w: int, c
 def run_optimization():
     """Starts optimization and stores results according to the settings you specify.
     """
-    sim_sett, err = File.read_data_set(DATA_SET_NAME)
+    # Props
+    ds_name = 'testSet2'
+    population_size = 100
+    number_of_evaluations = 20000
+    save_to_txt = True
+    create_visualisation_gif = True
+    create_comparison_graph = True
+    algorithms = ['ArtificialBeeColonyAlgorithm', 'FlowerPollinationAlgorithm', 'GeneticAlgorithm', 'BatAlgorithm',
+                  'GreyWolfOptimizer', 'ParticleSwarmAlgorithm', 'FireflyAlgorithm', 'HybridBatAlgorithm']
+
+    # Read dataset
+    sim_sett, err = File.read_data_set(ds_name)
     if err is not None:
         print(err)
         return
 
-    func = partial(Runner.run, sim_sett=sim_sett, n_fes=NUMBER_OF_EVALUATIONS, np=POPULATION_SIZE)
-    opt_res = Pool().map(func, ALGORITHM_LIST)
-    dir_p = Directory.create()
-    if SAVE_TO_TXT:
-        File.save_to_txt(dir_p, opt_res, POPULATION_SIZE, NUMBER_OF_EVALUATIONS, sim_sett)
-    if CREATE_VISUALIZATION_GIF:
-        ImageViz.viz_best_sol(sim_sett, dir_p, opt_res)
-    if CRATE_COMPARISON_GRAPH:
-        Graph.save_graph(opt_res, dir_p)
+    # Run algorithms
+    func = partial(Runner.run, sim_sett=sim_sett, n_fes=number_of_evaluations, np=population_size)
+    opt_res = Pool().map(func, algorithms)
+
+    # Save results
+    if save_to_txt or create_comparison_graph or create_visualisation_gif:
+        dir_p = Directory.create()
+        if save_to_txt:
+            File.save_to_txt(dir_p, opt_res, population_size, number_of_evaluations, sim_sett)
+        if create_visualisation_gif:
+            ImageViz.viz_best_sol(sim_sett, dir_p, opt_res)
+        if create_comparison_graph:
+            Graph.save_graph(opt_res, dir_p)
     print('Done!')
 
 

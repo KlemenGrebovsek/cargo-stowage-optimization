@@ -20,12 +20,6 @@ class BenchmarkC(object):
 
     def function(self):
         def evaluate(d: int, sol: list) -> int:
-            """ Method for evaluation of the solution.
-            :param d: An Integer, indicating size/dimensions of the problem.
-            :param sol: A List, indicating values for given solution.
-            :return: An Integer, indicating calculated fitness for given solution.
-            """
-
             total_p_movements, sol_index, total_lay_ds, total_we_ds = 0, 0, 0, 0
             cargo_space = CargoSpace(width=self.sim_sett.cs_width, height=self.sim_sett.cs_height)
 
@@ -47,11 +41,9 @@ class BenchmarkC(object):
                 total_p_movements += m
 
                 # Calculation of layout and weight distribution in cargo space.
-                top_lay = sum(l) / len(l)
-                top_we = sum(w) / len(w)
                 for x in range(self.sim_sett.cs_width):
-                    total_lay_ds += abs(l[x] - top_lay)
-                    total_we_ds += abs(w[x] - top_we)
+                    total_lay_ds += abs(l[x] - (sum(l) / len(l)))
+                    total_we_ds += abs(w[x] - (sum(w) / len(w)))
 
             # Return calculated fitness.
             return int(math.sqrt(total_p_movements * ((total_lay_ds * 4) * total_we_ds))) * 2
