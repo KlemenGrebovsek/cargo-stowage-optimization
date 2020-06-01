@@ -6,7 +6,7 @@ if __name__ == '__main__':
     data_manager = DataManager('VALID PATH')
 
     # Generate new data set
-    # data_manager.new('SetName', 30, 5, 4)
+    # data_manager.new(ds_name='SetName', pack_c=30, stat_n=5, cargo_s=4)
 
     sim_settings, err = data_manager.read('testSet2')
 
