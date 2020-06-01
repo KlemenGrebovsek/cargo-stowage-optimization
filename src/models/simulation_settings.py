@@ -10,7 +10,7 @@ class SimulationSettings(object):
         ds_name: A string, indicating a data set name.
     """
 
-    def __init__(self, pack_c: int, packages: int, station_n: int, cs_width: int, cs_height: int, ds_name: str):
+    def __init__(self, pack_c: int, packages: list, station_n: int, cs_width: int, cs_height: int, ds_name: str):
         self.pack_count = pack_c
         self.packages_by_station = packages
         self.station_n = station_n

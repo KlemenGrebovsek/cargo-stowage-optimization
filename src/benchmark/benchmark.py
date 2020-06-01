@@ -1,25 +1,26 @@
 import math
 import numpy as np
-from src.main_classes.simulation_settings import SimulationSettings
-from src.main_classes.cargo_space import CargoSpace
+from src.models.simulation_settings import SimulationSettings
+from src.models.cargo_space import CargoSpace
 
 
 class BenchmarkC(object):
 
-    """Benchmark class for selected problem.
-    Attributes:
-        Lower: An Integer, indicating lower bound of function.
-        Upper: An Integer, indicating upper bound of function.
-        sim_sett: An object, indicating optimization settings.
-    """
-
     def __init__(self, sim_sett: SimulationSettings):
+        """
+        :param sim_sett: SimulationSettings object.
+        """
         self.Lower = 0
         self.Upper = 1
         self.sim_sett = sim_sett
 
     def function(self):
         def evaluate(d: int, sol: list) -> int:
+            """
+            :param d: Dimension of a problem.
+            :param sol: Given solution for this generation.
+            :return: Calculated fitness score.
+            """
             total_p_movements, sol_index, total_lay_ds, total_we_ds = 0, 0, 0, 0
             cargo_space = CargoSpace(width=self.sim_sett.cs_width, height=self.sim_sett.cs_height)
 
@@ -37,7 +38,6 @@ class BenchmarkC(object):
             for station in range(1, self.sim_sett.station_n + 1, 1):
                 m, l, w = cargo_space.simulate_stop_at_station(station, self.sim_sett.packages_by_station[station - 1])
 
-                # Add the number of movements.
                 total_p_movements += m
 
                 # Calculation of layout and weight distribution in cargo space.
