@@ -76,6 +76,10 @@ class Simulation:
             print('Minimum n_fes=1 and minimum np=1.')
             return []
 
+        if len(self._algorithms) < 1:
+            print('Cannot run simulation without algorithms.')
+            return []
+
         print('Starting simulation...')
         func = partial(Runner.run, sim_sett=self._settings, n_fes=n_fes, np=np)
         opt_res = Pool().map(func, self._algorithms)
