@@ -21,7 +21,7 @@ The idea behind this project was to solve a problem of cargo stowage optimizatio
   # Generate new data set
   # data_manager.new(ds_name='SetName', pack_c=30, stat_n=5, cargo_s=4)
 
-  sim_settings, err = data_manager.read('testSet2')
+  sim_settings, err = data_manager.read('VALID PATH')
 
   if err != '':
       print(err)
