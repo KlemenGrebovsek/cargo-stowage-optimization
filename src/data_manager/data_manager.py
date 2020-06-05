@@ -60,7 +60,7 @@ class DataManager:
             return SimulationSettings(0, [], 0, 0, 0, ''), 'DataManager: Invalid folder path'
 
         try:
-            with open("%s/%s.csv" % (self._path, ds_name), mode='r') as f:
+            with open("%s/%s" % (self._path, ds_name), mode='r') as f:
                 reader = csv.reader(f, delimiter=',')
                 header = next(reader)
                 pack_c, stat_n, car_pac_wi, car_spa_he = int(header[0]), int(header[1]), int(header[2]), int(header[3])
