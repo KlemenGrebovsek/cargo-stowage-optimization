@@ -16,12 +16,12 @@ The idea behind this project was to solve a problem of cargo stowage optimizatio
 ## Usage
 
 ```python
-  data_manager = DataManager('VALID PATH')
+  data_manager = DataManager('VALID PATH TO DIRECTORY')
 
   # Generate new data set
   # data_manager.new(ds_name='SetName', pack_c=30, stat_n=5, cargo_s=4)
 
-  sim_settings, err = data_manager.read('testSet2')
+  sim_settings, err = data_manager.read('FILE NAME IN DIRECTORY')
 
   if err != '':
       print(err)
@@ -35,7 +35,7 @@ The idea behind this project was to solve a problem of cargo stowage optimizatio
 
   simulation.set_save_options(True, True, True)
 
-  sim_results = simulation.simulate(n_fes=150, np=30, path='VALID PATH')
+  sim_results = simulation.simulate(n_fes=150, np=30, path='DIRECTORY')
 
   for res in sim_results:
       print('\n%s, FITNESS:(%s), TIME:(%s)' % (res[0], res[1], res[3]))
