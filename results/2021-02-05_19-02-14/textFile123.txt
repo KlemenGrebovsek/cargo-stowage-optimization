@@ -1,0 +1,17 @@
+----Optimization info---- 
+Date: 2021-02-05_19-05-31 
+Algorithms: 6 
+ 
+----Dataset info---- 
+Name : TestSet2 
+Number of packages : 70 
+Number of stations : 5 
+Cargo stowage size : 8x8 
+ 
+----Optimization results---- 
+ArtificialBeeColonyAlgorithm (np=50, nFes=20000), Fitness: 4826.0, ExecutionTime : 169.47781 sec 
+FlowerPollinationAlgorithm (np=50, nFes=20000), Fitness: 5136.0, ExecutionTime : 73.26311 sec 
+ParticleSwarmAlgorithm (np=50, nFes=20000), Fitness: 5554.0, ExecutionTime : 192.18277 sec 
+GreyWolfOptimizer (np=50, nFes=20000), Fitness: 5842.0, ExecutionTime : 125.20656 sec 
+GeneticAlgorithm (np=50, nFes=20000), Fitness: 5972.0, ExecutionTime : 166.43698 sec 
+BatAlgorithm (np=50, nFes=20000), Fitness: 6236.0, ExecutionTime : 196.43019 sec 
