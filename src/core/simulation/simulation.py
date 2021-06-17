@@ -1,105 +1,128 @@
-import enum
+from datetime import datetime
+
 from NiaPy.util import Task, OptimizationType
+
+# NiaPy algorithms
 from NiaPy.algorithms.basic import *
 from NiaPy.algorithms.modified import *
 from NiaPy.algorithms.other import *
 
-from src.core.runner.runner import Runner
-from src.model.dataset import Dataset
+# Output options
+from src.model.output_opt_config import OutputOptionConfig
 from src.save_option.save_option import SaveOptionInterface
+from src.save_option.console_output import ConsoleOutputSaveOption
+from src.save_option.txt_output import TextOutputSaveOption
+from src.save_option.graph_output import GraphOutputSaveOption
+from src.save_option.gif_output import GifOutputSaveOption
+
+from src.core.runner.runner import Runner
+from src.core.simulation.simulation_errors import InvalidAlgorithmName, InvalidSaveOptionName, \
+    InvalidSimulationInitialState
+from src.logger.logger import Logger
+from src.model.dataset import Dataset
+from src.model.sort_attribute import SortAttribute
 from src.core.benchmark.benchmark import BenchmarkC
 from multiprocessing.pool import ThreadPool as Pool
 
 import random
 
 
-class SortAttribute(enum.Enum):
-    FITNESS = 0
-    EXECUTION_TIME = 1
-
-
 class Simulation:
     """
-    This class is responsible to run genetic algorithm simulation. It's limited to n_fes and np parameters.
+    This class is responsible to run genetic algorithms simulation. It's limited to n_fes and np parameters.
     """
 
-    def __init__(self, dataset: Dataset):
+    def __init__(self, dataset: Dataset, n_fes: int, np: int, save_to_dir: str):
         """
         Args:
-            dataset: Dataset for simulation.
+            dataset: Dataset of simulation.
+            n_fes Total number of evaluations.
+            np: Population size.
+            save_to_dir: Path to directory where simulation results will be stored.
         """
 
+        random.seed(n_fes + np + datetime.now().second)
+        self.logger = Logger(self.__class__.__name__)
+
+        self.n_fes = n_fes
+        self.logger.console_log('n_fes value set to {0}'.format(n_fes))
+
+        self.np = np
+        self.logger.console_log('np value set to {0}'.format(np))
+
         self._dataset: Dataset = dataset
+        self.logger.console_log('dataset {0}'.format(dataset.title))
+
         self._algorithms: list = []
         self._save_options: list = []
 
-    def add_algorithm(self, name: str, n_fes: int = 20, np: int = 30):
+        self._save_option_kwargs = {
+            'dir_path': save_to_dir,
+            'dataset': dataset
+        }
+
+    def add_algorithm(self, name: str) -> None:
         """Adds new genetic algorithm to simulation.
-        Throws KeyError if algorithm doesn't exists and ValueError n_fes/np value is invalid.
 
         Args:
             name: A string representing algorithm name.
-            n_fes: Total number of evaluations. Default value is 20.
-            np: Population size. Default value is 30.
-
-        Returns: Void
-        """
-
-        if n_fes < 1 or np < 1:
-            raise ValueError('Minimum valid n_fes and np value is 1.')
-
-        if name is None or len(name) < 1:
-            raise ValueError('Invalid algorithm name.')
-
-        alg_type = globals()[str(name)]
-        alg_obj = alg_type(seed=random.randint(1, 9999), task=Task(D=self._dataset.total_packages,
-                                                                   nFES=n_fes,
-                                                                   benchmark=BenchmarkC(dataset=self._dataset),
-                                                                   optType=OptimizationType.MINIMIZATION), NP=np)
-        self._algorithms.append(alg_obj)
-
-    def remove_algorithm(self, name: str) -> bool:
-        """Removes first genetic algorithm with that name.
-        Throws Exception if algorithm name value is invalid.
-
-        Args:
-            name: A string representing algorithm name.
-
-        Returns: A boolean representing, action result.
         """
 
         if name is None or len(name) < 1:
-            raise Exception('Invalid algorithm name.')
+            raise InvalidAlgorithmName('Invalid algorithm name "{0}"'.format(name))
 
-        for i in range(len(self._algorithms)):
-            if type(self._algorithms[i]).__name__ == name:
-                del self._algorithms[i]
-                return True
+        try:
+            alg_type = globals()[str(name)]
+            alg_obj = alg_type(seed=random.randint(1, 9999), task=Task(D=self._dataset.total_packages,
+                                                                       nFES=self.n_fes,
+                                                                       benchmark=BenchmarkC(dataset=self._dataset),
+                                                                       optType=OptimizationType.MINIMIZATION), NP=self.np)
+            self._algorithms.append(alg_obj)
+            self.logger.console_log('added algorithm {0}'.format(name))
 
-        return False
+        except Exception:
+            raise InvalidAlgorithmName('Invalid algorithm name "{0}"'.format(name))
 
     def algorithms(self) -> list:
-        """Gets all simulation algorithm names.
+        """Returns all algorithm names in simulation.
 
         Returns: A list of simulation algorithm names.
         """
 
         return [type(i).__name__ for i in self._algorithms]
 
-    def add_save_option(self, option: SaveOptionInterface):
+    def add_save_option(self, config: OutputOptionConfig):
         """ Adds new simulation result save option.
 
         Args:
-            option: SaveOptionInterface type of object.
+            config: SaveOptionConfig object.
 
         Returns: Void
         """
-        self._save_options.append(option)
 
-    def run(self, sort_by_best: SortAttribute):
-        """Starts simulation, saves results with save options and returns results.
-        Throws Exception if params are not set.
+        if config.class_name is None or len(config.class_name) < 1:
+            raise InvalidSaveOptionName('Invalid save option name "{0}"'.format(config.class_name))
 
+        try:
+            save_option_type = globals()[str(config.class_name)]
+
+            kwargs_obj = {}
+
+            for kwargs_name in config.included_kwargs:
+                param = self._save_option_kwargs[kwargs_name]
+                if param is not None:
+                    kwargs_obj[kwargs_name] = param
+
+            save_option = save_option_type(**kwargs_obj)
+            self._save_options.append(save_option)
+            self.logger.console_log('{0} save option added'.format(config.class_name))
+
+        except Exception:
+            raise InvalidSaveOptionName('Invalid save option name "{0} or kwargs {1}"'.format(config.class_name,
+                                                                                              config.included_kwargs))
+
+    def run(self, sort_by_best: SortAttribute) -> None:
+        """Starts simulation and saves results with specified save options.
         Args:
             sort_by_best: Sort results by this attribute from the best to the worst one.
 
@@ -107,19 +130,42 @@ class Simulation:
 
         """
 
-        if len(self._algorithms) < 1 or len(self._save_options) < 1:
-            raise Exception('Empty algorithm or save options list')
+        self._validate_initial_state()
+
+        self.logger.console_log("simulation starting...")
+        self.logger.console_log("simulation running...")
 
         pool = Pool()
         opt_res = pool.map(Runner.run, self._algorithms)
         pool.close()
         pool.join()
 
-        if sort_by_best == SortAttribute.FITNESS:
+        self.logger.console_log("simulation done...")
+
+        if sort_by_best == SortAttribute.fitness:
             sorted_res = sorted(opt_res, key=lambda item: item.result.best_fitness)
         else:
             sorted_res = sorted(opt_res, key=lambda item: item.execution_time)
 
-        # trigger all save options sync
+        self.logger.console_log("running save options...")
+
         for option in self._save_options:
             option.save(sorted_res)
+
+        self.logger.console_log("Done!")
+
+    def _validate_initial_state(self):
+        if len(self._algorithms) < 1:
+            raise InvalidSimulationInitialState('Cannot start simulation with empty list of algorithms')
+
+        if len(self._save_options) < 1:
+            raise InvalidSimulationInitialState('Cannot start simulation with empty list of save options')
+
+        if self.n_fes < 1:
+            raise InvalidSimulationInitialState('Cannot start simulation with n_fes prop less than 1')
+
+        if self.np < 1:
+            raise InvalidSimulationInitialState('Cannot start simulation with np prop less than 1')
+
+        if self._dataset is None:
+            raise InvalidSimulationInitialState('Cannot start simulation with empty dataset')

@@ -1,0 +1,33 @@
+{
+    "dataset": "../datasets/testSet2.csv",
+    "saveToDir" : "../results",
+    "n_fes": 20000,
+    "np": 80,
+    "sortByBest": "fitness",
+    "algorithms": [
+      "GeneticAlgorithm",
+      "FlowerPollinationAlgorithm",
+      "GreyWolfOptimizer",
+      "ArtificialBeeColonyAlgorithm",
+      "ParticleSwarmAlgorithm",
+      "BatAlgorithm"
+    ],
+    "outputOptions": [
+      {
+        "class": "ConsoleOutputSaveOption",
+        "included_kwargs": []
+      },
+      {
+        "class": "GraphOutputSaveOption",
+        "included_kwargs": ["dir_path"]
+      },
+      {
+        "class": "TextOutputSaveOption",
+        "included_kwargs": ["dir_path", "dataset"]
+      },
+      {
+        "class": "GifOutputSaveOption",
+        "included_kwargs": ["dir_path", "dataset"]
+      }
+    ]
+  }

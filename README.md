@@ -35,25 +35,25 @@ The idea behind this project was to solve a problem of cargo stowage optimizatio
 
 ```python
    dataset = CSVDatasetReader().read(os.path.join(DATASET_DIR, 'testSet2.csv'))
-   simulation = Simulation(dataset=dataset)
+simulation = Simulation(dataset=dataset)
 
-   simulation.add_algorithm('GeneticAlgorithm', np=POPULATION_SIZE, n_fes=N_FES)
-   simulation.add_algorithm('FlowerPollinationAlgorithm', np=POPULATION_SIZE, n_fes=N_FES)
-   simulation.add_algorithm('GreyWolfOptimizer', np=POPULATION_SIZE, n_fes=N_FES)
-   simulation.add_algorithm('ArtificialBeeColonyAlgorithm', np=POPULATION_SIZE, n_fes=N_FES)
-   simulation.add_algorithm('ParticleSwarmAlgorithm', np=POPULATION_SIZE, n_fes=N_FES)
-   simulation.add_algorithm('BatAlgorithm', np=POPULATION_SIZE, n_fes=N_FES)
+simulation.add_algorithm('GeneticAlgorithm', np=POPULATION_SIZE, n_fes=N_FES)
+simulation.add_algorithm('FlowerPollinationAlgorithm', np=POPULATION_SIZE, n_fes=N_FES)
+simulation.add_algorithm('GreyWolfOptimizer', np=POPULATION_SIZE, n_fes=N_FES)
+simulation.add_algorithm('ArtificialBeeColonyAlgorithm', np=POPULATION_SIZE, n_fes=N_FES)
+simulation.add_algorithm('ParticleSwarmAlgorithm', np=POPULATION_SIZE, n_fes=N_FES)
+simulation.add_algorithm('BatAlgorithm', np=POPULATION_SIZE, n_fes=N_FES)
 
-   # create folder to store results
-   result_dir_path = os.path.join(RESULT_DIR, datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
-   os.mkdir(path=result_dir_path)
+# create folder to store results
+result_dir_path = os.path.join(RESULT_DIR, datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
+os.mkdir(path=result_dir_path)
 
-   simulation.add_save_option(ConsoleOutputSaveOption())
-   simulation.add_save_option(GraphOutputSaveOption(dir_path=result_dir_path, file_name='graph123'))
-   simulation.add_save_option(TextOutputSaveOption(dataset=dataset, dir_path=result_dir_path, file_name='textFile123'))
-   simulation.add_save_option(GifOutputSaveOption(dataset=dataset, dir_path=result_dir_path))
+simulation.add_save_option(ConsoleOutputSaveOption())
+simulation.add_save_option(GraphOutputSaveOption(dir_path=result_dir_path, file_name='graph123'))
+simulation.add_save_option(TextOutputSaveOption(dataset=dataset, dir_path=result_dir_path, file_name='textFile123'))
+simulation.add_save_option(GifOutputSaveOption(dataset=dataset, dir_path=result_dir_path))
 
-   simulation.run(sort_by_best=SortAttribute.FITNESS)
+simulation.run(sort_by_best=SortAttribute.fitness)
 ```
 
 

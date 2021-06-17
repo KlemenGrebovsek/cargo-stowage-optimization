@@ -19,16 +19,16 @@ def _calc_we_dist(total_w: int, col_we: int) -> int:
 
 class GifOutputSaveOption(SaveOptionInterface):
 
-    def __init__(self, dir_path: str, dataset: Dataset):
+    def __init__(self, **kwargs):
         """
         Args:
             dataset: Used dataset.
             dir_path: Path to dir.
         """
 
-        self._dir_path: str = dir_path
+        self._dir_path: str = kwargs['dir_path']
         self._file_name: str = ''
-        self._dataset = dataset
+        self._dataset = kwargs['dataset']
 
     def save(self, simulation_results: list):
         """ Save simulation as gif file.
