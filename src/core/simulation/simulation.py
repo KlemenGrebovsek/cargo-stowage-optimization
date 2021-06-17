@@ -1,3 +1,4 @@
+import os
 from datetime import datetime
 
 from NiaPy.util import Task, OptimizationType
@@ -85,8 +86,6 @@ class Simulation:
 
     def algorithms(self) -> list:
         """Returns all algorithm names in simulation.
-
-        Returns: A list of simulation algorithm names.
         """
 
         return [type(i).__name__ for i in self._algorithms]
@@ -123,36 +122,40 @@ class Simulation:
 
     def run(self, sort_by_best: SortAttribute) -> None:
         """Starts simulation and saves results with specified save options.
+
         Args:
             sort_by_best: Sort results by this attribute from the best to the worst one.
 
         Returns: void
-
         """
 
+        self.logger.console_log('Validating state')
         self._validate_initial_state()
 
-        self.logger.console_log("simulation starting...")
-        self.logger.console_log("simulation running...")
+        self.logger.console_log("Starting optimization tasks")
+        self.logger.console_log("Waiting tasks")
 
         pool = Pool()
         opt_res = pool.map(Runner.run, self._algorithms)
         pool.close()
         pool.join()
 
-        self.logger.console_log("simulation done...")
+        self.logger.console_log("Tasks finished")
 
-        if sort_by_best == SortAttribute.fitness:
-            sorted_res = sorted(opt_res, key=lambda item: item.result.best_fitness)
+        sorted_res = sorted(opt_res, key=lambda item: item.result.best_fitness if sort_by_best == SortAttribute.fitness
+                            else item.execution_time)
+
+        if not any(res_info.has_error for res_info in sorted_res):
+            self.logger.console_log('Not all simulation tasks were successful')
         else:
-            sorted_res = sorted(opt_res, key=lambda item: item.execution_time)
+            self.logger.console_log('All simulation tasks were successful')
 
-        self.logger.console_log("running save options...")
+        self.logger.console_log("Starting save options")
 
         for option in self._save_options:
             option.save(sorted_res)
 
-        self.logger.console_log("Done!")
+        self.logger.console_log("Done, stopping execution")
 
     def _validate_initial_state(self):
         if len(self._algorithms) < 1:
@@ -162,10 +165,23 @@ class Simulation:
             raise InvalidSimulationInitialState('Cannot start simulation with empty list of save options')
 
         if self.n_fes < 1:
-            raise InvalidSimulationInitialState('Cannot start simulation with n_fes prop less than 1')
+            raise InvalidSimulationInitialState('Cannot start simulation with n_fes prop value less than 1')
 
         if self.np < 1:
-            raise InvalidSimulationInitialState('Cannot start simulation with np prop less than 1')
+            raise InvalidSimulationInitialState('Cannot start simulation with np prop value less than 1')
 
-        if self._dataset is None:
-            raise InvalidSimulationInitialState('Cannot start simulation with empty dataset')
+        if self._dataset is None or len(self._dataset.packages) != self._dataset.total_packages \
+                or self._dataset.total_packages == 0 or len(self._dataset.title) < 1:
+            raise InvalidSimulationInitialState('Cannot start simulation with invalid dataset')
+
+        stat_count = self._dataset.total_stations
+
+        for package in self._dataset.packages:
+            if package.station_in < 1 or package.station_out > stat_count \
+                    or not package.station_in < package.station_out:
+                raise InvalidSimulationInitialState('Cannot start simulation with invalid dataset')
+
+        dir_path = self._save_option_kwargs['dir_path']
+
+        if dir_path is None or len(dir_path) < 1 or not os.path.isdir(dir_path):
+            raise InvalidSimulationInitialState('Cannot start simulation with invalid results dir path')
