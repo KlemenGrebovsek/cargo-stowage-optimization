@@ -2,6 +2,7 @@ import unittest
 
 from src.core.simulation.simulation_errors import InvalidAlgorithmName, InvalidSaveOptionName, \
     InvalidSimulationInitialState
+from src.domain.package import Package
 from src.model.dataset import Dataset
 from src.core.simulation.simulation import Simulation
 from src.model.output_opt_config import OutputOptionConfig
@@ -153,10 +154,93 @@ class SimulationTest(unittest.TestCase):
         except InvalidSimulationInitialState:
             pass
 
-    def test_simulation_should_not_start_with_invalid_dataset(self):
+    def test_simulation_should_not_start_with_invalid_dataset_no_packages(self):
         try:
             dataset = Dataset('name', 30, 5, 5, 5, [])
             simulation = Simulation(dataset=dataset, n_fes=30, np=5, save_to_dir='../results')
+            simulation.add_algorithm('GreyWolfOptimizer')
+            simulation.add_save_option(OutputOptionConfig(class_name='ConsoleOutputSaveOption', included_kwargs=[]))
+            simulation.run(sort_by_best=SortAttribute.fitness)
+            self.fail("Simulation started with no algorithms")
+        except InvalidSimulationInitialState:
+            pass
+
+    def test_simulation_should_not_start_with_invalid_dataset_invalid_package_count(self):
+        try:
+            dataset = Dataset('name', 30, 5, 5, 5, [Package(id_num=1, station_in=1, station_out=3, weight=30)])
+            simulation = Simulation(dataset=dataset, n_fes=30, np=5, save_to_dir='../results')
+            simulation.add_algorithm('GreyWolfOptimizer')
+            simulation.add_save_option(OutputOptionConfig(class_name='ConsoleOutputSaveOption', included_kwargs=[]))
+            simulation.run(sort_by_best=SortAttribute.fitness)
+            self.fail("Simulation started with no algorithms")
+        except InvalidSimulationInitialState:
+            pass
+
+    def test_simulation_should_not_start_with_invalid_dataset_invalid_package_station_in(self):
+        try:
+            dataset = Dataset('name', 5, 3, 3, 3,
+                              [Package(id_num=1, station_in=1, station_out=2, weight=30),
+                               Package(id_num=2, station_in=1, station_out=3, weight=30),
+                               Package(id_num=3, station_in=0, station_out=2, weight=30),
+                               Package(id_num=4, station_in=1, station_out=3, weight=30),
+                               Package(id_num=5, station_in=1, station_out=2, weight=30)
+                               ])
+
+            simulation = Simulation(dataset=dataset, n_fes=30, np=5, save_to_dir='../results')
+            simulation.add_algorithm('GreyWolfOptimizer')
+            simulation.add_save_option(OutputOptionConfig(class_name='ConsoleOutputSaveOption', included_kwargs=[]))
+            simulation.run(sort_by_best=SortAttribute.fitness)
+            self.fail("Simulation started with no algorithms")
+        except InvalidSimulationInitialState:
+            pass
+
+    def test_simulation_should_not_start_with_invalid_dataset_invalid_package_station_out(self):
+        try:
+            dataset = Dataset('name', 5, 3, 3, 3,
+                              [Package(id_num=1, station_in=1, station_out=2, weight=30),
+                               Package(id_num=2, station_in=1, station_out=3, weight=30),
+                               Package(id_num=3, station_in=1, station_out=6, weight=30),
+                               Package(id_num=4, station_in=1, station_out=3, weight=30),
+                               Package(id_num=5, station_in=1, station_out=2, weight=30)
+                               ])
+
+            simulation = Simulation(dataset=dataset, n_fes=30, np=5, save_to_dir='../results')
+            simulation.add_algorithm('GreyWolfOptimizer')
+            simulation.add_save_option(OutputOptionConfig(class_name='ConsoleOutputSaveOption', included_kwargs=[]))
+            simulation.run(sort_by_best=SortAttribute.fitness)
+            self.fail("Simulation started with no algorithms")
+        except InvalidSimulationInitialState:
+            pass
+
+    def test_simulation_should_not_start_with_invalid_dataset_invalid_package_station_out_in(self):
+        try:
+            dataset = Dataset('name', 5, 3, 3, 3,
+                              [Package(id_num=1, station_in=1, station_out=2, weight=30),
+                               Package(id_num=2, station_in=1, station_out=3, weight=30),
+                               Package(id_num=3, station_in=3, station_out=3, weight=30),
+                               Package(id_num=4, station_in=1, station_out=3, weight=30),
+                               Package(id_num=5, station_in=1, station_out=2, weight=30)
+                               ])
+
+            simulation = Simulation(dataset=dataset, n_fes=30, np=5, save_to_dir='../results')
+            simulation.add_algorithm('GreyWolfOptimizer')
+            simulation.add_save_option(OutputOptionConfig(class_name='ConsoleOutputSaveOption', included_kwargs=[]))
+            simulation.run(sort_by_best=SortAttribute.fitness)
+            self.fail("Simulation started with no algorithms")
+        except InvalidSimulationInitialState:
+            pass
+
+    def test_simulation_should_not_start_with_invalid_dir_path(self):
+        try:
+            dataset = Dataset('name', 5, 3, 3, 3,
+                              [Package(id_num=1, station_in=1, station_out=2, weight=30),
+                               Package(id_num=2, station_in=2, station_out=3, weight=30),
+                               Package(id_num=3, station_in=1, station_out=3, weight=30),
+                               Package(id_num=4, station_in=2, station_out=3, weight=30),
+                               Package(id_num=5, station_in=1, station_out=2, weight=30)
+                               ])
+
+            simulation = Simulation(dataset=dataset, n_fes=30, np=5, save_to_dir='../invalidDir')
             simulation.add_algorithm('GreyWolfOptimizer')
             simulation.add_save_option(OutputOptionConfig(class_name='ConsoleOutputSaveOption', included_kwargs=[]))
             simulation.run(sort_by_best=SortAttribute.fitness)

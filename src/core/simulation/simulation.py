@@ -105,14 +105,14 @@ class Simulation:
         try:
             save_option_type = globals()[str(config.class_name)]
 
-            kwargs_obj = {}
+            kwargs_dict = {}
 
             for kwargs_name in config.included_kwargs:
                 param = self._save_option_kwargs[kwargs_name]
                 if param is not None:
-                    kwargs_obj[kwargs_name] = param
+                    kwargs_dict[kwargs_name] = param
 
-            save_option = save_option_type(**kwargs_obj)
+            save_option = save_option_type(**kwargs_dict)
             self._save_options.append(save_option)
             self.logger.console_log('{0} save option added'.format(config.class_name))
 
