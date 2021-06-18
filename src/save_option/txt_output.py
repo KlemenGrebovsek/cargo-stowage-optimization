@@ -14,9 +14,9 @@ class TextOutputSaveOption(SaveOptionInterface):
             dir_path: Path to dir.
         """
 
-        self._dir_path: str = kwargs['dir_path']
-        self._dataset = kwargs['dataset']
-        self._file_name: str = 'results'
+        self._dir_path:     str = kwargs['dir_path']
+        self._dataset:      Dataset = kwargs['dataset']
+        self._file_name:    str = 'results'
 
     def save(self, simulation_results: list):
         """ Saves results as txt file.

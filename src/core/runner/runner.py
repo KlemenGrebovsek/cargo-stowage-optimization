@@ -1,6 +1,6 @@
 import timeit
 
-from src.model.simulation_result import SimulationResult
+from src.model.simulation_result import OptimizationResult
 from src.model.simulation_run_info import SimulationRunInfo
 
 
@@ -26,7 +26,7 @@ class Runner:
                 has_error=False,
                 error_msg='',
                 execution_time=round(end_t - start_t, 5),
-                result=SimulationResult(
+                result=OptimizationResult(
                     algorithm_title=type(alg_obj).__name__,
                     best_fitness=best_fitness,
                     best_solution=best_solution,
@@ -41,7 +41,7 @@ class Runner:
                 has_error=True,
                 error_msg=str(e),
                 execution_time=-1,
-                result=SimulationResult(
+                result=OptimizationResult(
                     algorithm_title='',
                     best_fitness=0,
                     best_solution=[],

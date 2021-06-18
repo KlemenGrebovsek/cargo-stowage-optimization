@@ -1,5 +1,5 @@
 {
-    "dataset": "../datasets/testSet2.csv",
+    "dataset": "../datasets/testSet3.csv",
     "saveToDir" : "../results",
     "n_fes": 20000,
     "np": 80,

@@ -22,8 +22,8 @@ class ConsoleOutputSaveOption(SaveOptionInterface):
             print('Title:', run_result.result.algorithm_title, )
 
             if not run_result.has_error:
-                print('Execution time:', run_result.execution_time, 'ms')
                 print('Fitness:', run_result.result.best_fitness)
+                print('Execution time:', run_result.execution_time, 'ms')
             else:
                 print(run_result.error_msg, '\n')
 

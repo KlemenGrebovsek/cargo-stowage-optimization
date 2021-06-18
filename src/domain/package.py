@@ -10,11 +10,11 @@ class Package:
             weight:         Gross weight.
         """
 
-        self._id = id_num
-        self._station_out = station_out
-        self._station_in = station_in
-        self._weight = weight
-        self.given_col_index = 0
+        self._id:               int = id_num
+        self._station_out:      int = station_out
+        self._station_in:       int = station_in
+        self._weight:           int = weight
+        self.given_col_index:   int = 0
 
     @property
     def id(self) -> int:

@@ -14,8 +14,8 @@ class GraphOutputSaveOption(SaveOptionInterface):
             dir_path: Path to dir.
         """
 
-        self._dir_path: str = kwargs['dir_path']
-        self._file_name: str = 'results'
+        self._dir_path:     str = kwargs['dir_path']
+        self._file_name:    str = 'results'
 
     def save(self, simulation_results: list):
         """ Saves results as graph into png file.

@@ -145,7 +145,7 @@ class Simulation:
         sorted_res = sorted(opt_res, key=lambda item: item.result.best_fitness if sort_by_best == SortAttribute.fitness
                             else item.execution_time)
 
-        if not any(res_info.has_error for res_info in sorted_res):
+        if any(res_info.has_error for res_info in sorted_res):
             self.logger.console_log('Not all simulation tasks were successful')
         else:
             self.logger.console_log('All simulation tasks were successful')

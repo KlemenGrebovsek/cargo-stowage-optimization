@@ -26,9 +26,9 @@ class GifOutputSaveOption(SaveOptionInterface):
             dir_path: Path to dir.
         """
 
-        self._dir_path: str = kwargs['dir_path']
-        self._file_name: str = ''
-        self._dataset = kwargs['dataset']
+        self._dir_path:     str = kwargs['dir_path']
+        self._file_name:    str = ''
+        self._dataset:      Dataset = kwargs['dataset']
 
     def save(self, simulation_results: list):
         """ Save simulation as gif file.
@@ -96,7 +96,7 @@ class GifOutputSaveOption(SaveOptionInterface):
 
             draw_obj.text((x, 15), 'Station number: %s' % station, fill='black', font=big_font)
 
-            draw_obj.text((x, 50), 'Cargo space before station', fill='black', font=big_font)
+            draw_obj.text((x, 50), 'Before station', fill='black', font=big_font)
 
             draw_obj.line(((x_line, y + 35), (x_line, y - (25 * self._dataset.height))), fill=50, width=2)
 
@@ -105,7 +105,7 @@ class GifOutputSaveOption(SaveOptionInterface):
             dr_x = 30 + (35 * self._dataset.width) + (5 * self._dataset.width)
             dr_y = stat_image.height - 65
 
-            draw_obj.text((dr_x, 50), 'Cargo space after station', fill='black', font=big_font)
+            draw_obj.text((dr_x, 50), 'After station', fill='black', font=big_font)
 
             m, l, col_we_sum = cargo_space.simulate_stop_at_station(station, packages_by_station[station - 1])
 

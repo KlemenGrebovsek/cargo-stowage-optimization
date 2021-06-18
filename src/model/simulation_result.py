@@ -1,4 +1,4 @@
-class SimulationResult:
+class OptimizationResult:
     """Holds data for best simulation result.
     """
 

@@ -18,7 +18,7 @@ class BenchmarkC(object):
 
     def function(self):
         def evaluate(d: int, sol: list) -> int:
-            package_movements, sol_index, total_lay_ds, total_we_ds = 0, 0, 0, 0
+            total_package_movements, sol_index, total_lay_ds, total_we_ds = 0, 0, 0, 0
             cargo_space = CargoSpace(width=self._dataset.width, height=self._dataset.height)
 
             # Set column boundaries.
@@ -35,7 +35,7 @@ class BenchmarkC(object):
                 package_movements, layout_col_dev, weight_col_dev \
                     = cargo_space.simulate_stop_at_station(station, self._packages_by_station[station - 1])
 
-                package_movements += package_movements
+                total_package_movements += package_movements
 
                 # Calculate layout and weight distribution in cargo space.
                 for x in range(self._dataset.width):
@@ -44,5 +44,5 @@ class BenchmarkC(object):
 
             # Return calculated fitness.
             # Probably should find better formula to calculate fitness.
-            return int(math.sqrt(package_movements * ((total_lay_ds * 4) * total_we_ds))) * 2
+            return int(math.sqrt(total_package_movements * ((total_lay_ds * 4) * total_we_ds))) * 2
         return evaluate
