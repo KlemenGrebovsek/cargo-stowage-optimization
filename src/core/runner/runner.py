@@ -39,7 +39,7 @@ class Runner:
             return SimulationRunInfo(
                 completed=False,
                 has_error=True,
-                error_msg=str(e),
+                error_msg='{0}: {1}'.format(type(alg_obj).__name__, str(e)),
                 execution_time=-1,
                 result=OptimizationResult(
                     algorithm_title='',

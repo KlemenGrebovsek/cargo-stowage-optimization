@@ -16,18 +16,18 @@ def generate_data_set():
     try:
         generator = BaseDatasetGenerator()
         csv_writer = CSVDatasetWriter()
-        new_ds = generator.make(title='testSet3', pack_c=30, stat_n=5, cargo_dim=5)
+        new_ds = generator.make(title='testSet3', pack_c=54, stat_n=5, cargo_dim=5)
         csv_writer.write(dir_path='../datasets', file_name='testSet3', dataset=new_ds)
     except Exception as error:
         print(str(error))
 
 
 if __name__ == '__main__':
+    # generate_data_set()
     try:
         config_data = json.load(open(configFile, 'r'))
         dataset = CSVDatasetReader().read(config_data['dataset'])
 
-        # create dir in which simulation results will be saved
         result_dir_path = os.path.join(config_data['saveToDir'], datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
         os.mkdir(path=result_dir_path)
 

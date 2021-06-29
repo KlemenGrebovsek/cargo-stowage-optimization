@@ -84,14 +84,20 @@ class Column:
 
         wait_que, mov_sum, wait_que_act = [], 0, False
 
+        # should probably refactor this
         for i in range(self._package_count):
             if wait_que_act:
-                wait_que.append(self._values[i])
+                self._package_count -= 1
+                self._sum_weight -= 0 if self._values[i] is None else self._values[i].weight
+                if self._values[i].station_out != station_index:
+                    wait_que.append(self._values[i])
+                self._values[i] = None
+                mov_sum += 1
             elif self._values[i].station_out == station_index:
                 wait_que_act = True
-            self._package_count -= 1
-            self._sum_weight -= 0 if self._values[i] is None else self._values[i].weight
-            self._values[i] = None
-            mov_sum += 1
+                self._package_count -= 1
+                self._sum_weight -= 0 if self._values[i] is None else self._values[i].weight
+                self._values[i] = None
+                mov_sum += 1
 
         return wait_que, mov_sum

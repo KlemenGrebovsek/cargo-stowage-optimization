@@ -1,13 +1,13 @@
 {
     "dataset": "../datasets/testSet3.csv",
     "saveToDir" : "../results",
-    "n_fes": 20000,
-    "np": 80,
+    "n_fes": 8000,
+    "np": 50,
     "sortByBest": "fitness",
     "algorithms": [
       "GeneticAlgorithm",
-      "FlowerPollinationAlgorithm",
       "GreyWolfOptimizer",
+      "FlowerPollinationAlgorithm",
       "ArtificialBeeColonyAlgorithm",
       "ParticleSwarmAlgorithm",
       "BatAlgorithm"

@@ -31,7 +31,6 @@ class CargoSpace(object):
         packages_per_col = np.zeros(len(self._columns), dtype=int)
 
         # Simulates process of unloading packages for specified station.
-
         for index, column in enumerate(self._columns):
             ret_que, ret_movements = column.unload_at_station(station_index)
             movements_sum += ret_movements
@@ -39,18 +38,17 @@ class CargoSpace(object):
             packages_per_col[index] = column.count()
 
         # Simulates process of loading packages for specified station.
-
         for package in packages_to_load:
             # set add index, if column is full, than we need to pick another one.
-            add_index = np.argmin(packages_per_col) if packages_per_col[package.given_col_index] == self._height - 1 \
-                else package.given_col_index
+            add_index = package.given_col_index
+            if packages_per_col[add_index] == self._height:
+                add_index = np.argmin(packages_per_col)
 
             self._columns[add_index].add(package)
             packages_per_col[add_index] += 1
             movements_sum += 1
 
         # Loading packages from waiting que.
-
         for w_package in wait_que:
             add_index = int(np.argmin(packages_per_col))
             self._columns[add_index].add(w_package)

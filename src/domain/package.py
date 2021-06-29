@@ -31,3 +31,9 @@ class Package:
     @property
     def weight(self) -> int:
         return self._weight
+
+    def set_station_in(self, station: int):
+        self._station_in = station
+
+    def set_station_out(self, station: int):
+        self._station_out = station
