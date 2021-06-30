@@ -1,11 +1,15 @@
 # Cargo-stowage-optimization
 
-The idea behind this project was to solve a problem of cargo stowage optimization with help of evolutionary algorithms. In addition to solving a given problem, the solution also offers a comparison of evolutionary algorithms.
+The idea behind this project was to solve a problem of cargo stowage optimization with help of evolutionary algorithms.
+
+**Main goals**
+- Optimization of package placement in cargo space
+- Comparison of evolutionary algorithms 
 
 **Limitations**
- - 2D representation of cargo space and package
- - Same dimension of all the pakcages
-
+ - 2D representation of cargo space and packages
+ - Same dimensions for all packages 
+ 
 **Requirements**
  - Python 3.6+
  - Pip
@@ -16,45 +20,86 @@ The idea behind this project was to solve a problem of cargo stowage optimizatio
   - pillow
   - matplotlib
   - imageio
+  - marshmallow_dataclass
   
 ## Usage
 
-**Generate and save new dataset**
+**Configuration**
 
-```python
-   dataset_generator = BaseDatasetGenerator()
-   csv_writer = CSVDatasetWriter()
+In most cases what we want to change are following properties:
+- (dataset) - path to dataset
+- (n_fes) - number of function evaluations
+- (np) - population size
+- (algorithms) - list names of evolutionary algorithms that will be included in simulation
+ 
+Find more info about algoritms at: https://niapy.readthedocs.io/en/stable/api/algorithms.html
 
-   # title, total packages, total stations, cargo space dimensions.
-   dataset = dataset_generator.make('randomNameDataset', 30, 5, 5)
+Sample config file:
 
-   csv_writer.write(dir_path=DATASET_DIR, file_name='randomNameDataset', dataset=dataset)
+```json
+  {
+    "dataset": "../datasets/testSet3.csv",
+    "saveToDir" : "../results",
+    "n_fes": 8000,
+    "np": 50,
+    "sortByBest": "fitness",
+    "algorithms": [
+      "GeneticAlgorithm",
+      "GreyWolfOptimizer",
+      "FlowerPollinationAlgorithm",
+      "ArtificialBeeColonyAlgorithm",
+      "ParticleSwarmAlgorithm",
+      "BatAlgorithm"
+    ],
+    "outputOptions": [
+      {
+        "class": "ConsoleOutputOption",
+        "included_kwargs": []
+      },
+      {
+        "class": "GraphOutputOption",
+        "included_kwargs": ["dir_path"]
+      },
+      {
+        "class": "TextOutputOption",
+        "included_kwargs": ["dir_path", "dataset"]
+      },
+      {
+        "class": "GifOutputOption",
+        "included_kwargs": ["dir_path", "dataset"]
+      }
+    ]
+  }
 ```
 
-**Set and run simulation**
+**Output options**
+
+Already existing output options should cover most cases, but you can define new ones by implementing following interface:
 
 ```python
-   dataset = CSVDatasetReader().read(os.path.join(DATASET_DIR, 'testSet2.csv'))
-   simulation = Simulation(dataset=dataset)
+class SaveOptionInterface:
 
-   simulation.add_algorithm('GeneticAlgorithm', np=POPULATION_SIZE, n_fes=N_FES)
-   simulation.add_algorithm('FlowerPollinationAlgorithm', np=POPULATION_SIZE, n_fes=N_FES)
-   simulation.add_algorithm('GreyWolfOptimizer', np=POPULATION_SIZE, n_fes=N_FES)
-   simulation.add_algorithm('ArtificialBeeColonyAlgorithm', np=POPULATION_SIZE, n_fes=N_FES)
-   simulation.add_algorithm('ParticleSwarmAlgorithm', np=POPULATION_SIZE, n_fes=N_FES)
-   simulation.add_algorithm('BatAlgorithm', np=POPULATION_SIZE, n_fes=N_FES)
-
-   # create folder to store results
-   result_dir_path = os.path.join(RESULT_DIR, datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
-   os.mkdir(path=result_dir_path)
-
-   simulation.add_save_option(ConsoleOutputSaveOption())
-   simulation.add_save_option(GraphOutputSaveOption(dir_path=result_dir_path, file_name='graph123'))
-   simulation.add_save_option(TextOutputSaveOption(dataset=dataset, dir_path=result_dir_path, file_name='textFile123'))
-   simulation.add_save_option(GifOutputSaveOption(dataset=dataset, dir_path=result_dir_path))
-
-   simulation.run(sort_by_best=SortAttribute.FITNESS)
+    def save(self, simulation_results: list):
+        """ Save simulation results.
+        Args:
+            simulation_results: A list of simulation results and best solution for each algorithm.
+        Returns: void
+        """
+        pass
 ```
 
+In case of adding custom output option don't forget to update config file and simulation output kwargs in simulation class constructor.
 
+Simulation class is located at: src/core/simmulation/simulation.py
 
+**Benchmarking**
+
+Benchmark class is located at 'src/core/benchmark/benchmark.py'.
+
+Currently defined formula to calculate solution fitness is probably not the most optimal.
+
+Variables that can be included are: package movements,  layout distribution and weight distribution.
+
+**Creating new dataset**
+
+Method for generating new dataset is already implemented in main.py.

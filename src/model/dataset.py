@@ -1,5 +1,5 @@
 class Dataset:
-    """Holds all data for specific dataset and it's readonly.
+    """Holds data for specific dataset and it's readonly.
     """
 
     def __init__(self, title: str, total_packages: int, total_stations: int,

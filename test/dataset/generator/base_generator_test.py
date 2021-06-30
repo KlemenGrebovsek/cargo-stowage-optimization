@@ -77,10 +77,18 @@ class BaseGeneratorTest(unittest.TestCase):
         except ValueError as e:
             self.fail(e)
 
+    def test_to_small_cargo_space(self):
+        generator = BaseDatasetGenerator()
+        try:
+            _ = generator.make('', 100, 5, 5)
+            self.fail()
+        except ValueError:
+            pass
+
     def test_valid_in_out_station(self):
         generator = BaseDatasetGenerator()
         try:
-            dataset = generator.make('test123', 30, 5, 5)
+            dataset = generator.make('test123', 54, 5, 5)
 
             for package in dataset.packages:
                 if package.station_in >= package.station_out:

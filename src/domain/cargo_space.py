@@ -1,5 +1,9 @@
+from numpy import ndarray
+
 from src.domain.cs_column import Column
 import numpy as np
+
+from src.domain.stop_at_station_summary import StopAtStationSummary
 
 
 class CargoSpace(object):
@@ -15,46 +19,55 @@ class CargoSpace(object):
     def columns(self) -> list:
         return self._columns
 
-    def simulate_stop_at_station(self, station_index: int, packages_to_load: list) -> tuple:
+    def simulate_stop_at_station(self, station_index: int, packages_to_load: list) -> StopAtStationSummary:
         """ Simulates stop at station, unloads, loads packages and monitors activities and statuses.
 
         Args:
             station_index: Current station index.
             packages_to_load: List of packages to load at this station.
 
-        Returns: A tuple of (total movements in the process (int), layout number of packets per column (list),
-         layout sum weight of packets per column (list)
+        Returns: Summary of process and current state of cargo space.
         """
 
         movements_sum = 0
         wait_que = []
         packages_per_col = np.zeros(len(self._columns), dtype=int)
 
-        # Simulates process of unloading packages for specified station.
+        # Unload packages for current station.
+        movements_sum += self._unload_packages(packages_per_col, wait_que, station_index)
 
+        # Load packages for current station.
+        movements_sum += self._load_packages(packages_to_load, packages_per_col)
+
+        # Load packages from waiting que.
+        movements_sum += self._load_packages(wait_que, packages_per_col)
+
+        return StopAtStationSummary(
+            movements_sum=movements_sum,
+            layout_dist=packages_per_col.tolist(),
+            weight_dist=[column.sum_weight for column in self._columns]
+        )
+
+    def _unload_packages(self, packages_per_col: ndarray, wait_que: list, station_index: int) -> int:
+        movement = 0
         for index, column in enumerate(self._columns):
             ret_que, ret_movements = column.unload_at_station(station_index)
-            movements_sum += ret_movements
+            movement += ret_movements
             wait_que += ret_que
             packages_per_col[index] = column.count()
 
-        # Simulates process of loading packages for specified station.
+        return movement
 
+    def _load_packages(self, packages_to_load: list, packages_per_col: ndarray) -> int:
+        movements = 0
         for package in packages_to_load:
-            # set add index, if column is full, than we need to pick another one.
-            add_index = np.argmin(packages_per_col) if packages_per_col[package.given_col_index] == self._height - 1 \
-                else package.given_col_index
+            add_index = package.given_col_index
+
+            if packages_per_col[add_index] == self._height:
+                add_index = np.argmin(packages_per_col)
 
             self._columns[add_index].add(package)
             packages_per_col[add_index] += 1
-            movements_sum += 1
+            movements += 1
 
-        # Loading packages from waiting que.
-
-        for w_package in wait_que:
-            add_index = int(np.argmin(packages_per_col))
-            self._columns[add_index].add(w_package)
-            packages_per_col[add_index] += 1
-            movements_sum += 1
-
-        return movements_sum, packages_per_col, [column.sum_weight for column in self._columns]
+        return movements

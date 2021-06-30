@@ -1,43 +1,54 @@
 import datetime
+import json
 import os
 
 from src.core.simulation.simulation import Simulation, SortAttribute
+from src.dataset.generator.base_generator import BaseDatasetGenerator
 from src.dataset.reader.csv_reader import CSVDatasetReader
-from src.save_option.console_output import ConsoleOutputSaveOption
-from src.save_option.gif_output import GifOutputSaveOption
-from src.save_option.graph_output import GraphOutputSaveOption
-from src.save_option.txt_output import TextOutputSaveOption
+from src.dataset.writer.csv_writer import CSVDatasetWriter
+from src.model.output_opt_config import OutputOptionConfig
 
-# Consts
-RESULT_DIR = '../results'
-DATASET_DIR = '../datasets'
-POPULATION_SIZE = 50
-N_FES = 20000
+configFile = '../config/config.json'
 
-# Algorithms ->  https://niapy.readthedocs.io/en/stable/api/algorithms.html
+
+# use this method to generate new dataset
+def generate_data_set():
+    try:
+        generator = BaseDatasetGenerator()
+        csv_writer = CSVDatasetWriter()
+        new_ds = generator.make(title='testSet3', pack_c=225, stat_n=5, cargo_dim=10)
+        csv_writer.write(dir_path='../datasets', file_name='testSet3', dataset=new_ds)
+    except Exception as error:
+        print(str(error))
+
 
 if __name__ == '__main__':
+    # generate_data_set()
     try:
-        dataset = CSVDatasetReader().read(os.path.join(DATASET_DIR, 'testSet2.csv'))
-        simulation = Simulation(dataset=dataset)
+        config_data = json.load(open(configFile, 'r'))
+        dataset = CSVDatasetReader().read(config_data['dataset'])
 
-        simulation.add_algorithm('GeneticAlgorithm', np=POPULATION_SIZE, n_fes=N_FES)
-        simulation.add_algorithm('FlowerPollinationAlgorithm', np=POPULATION_SIZE, n_fes=N_FES)
-        simulation.add_algorithm('GreyWolfOptimizer', np=POPULATION_SIZE, n_fes=N_FES)
-        simulation.add_algorithm('ArtificialBeeColonyAlgorithm', np=POPULATION_SIZE, n_fes=N_FES)
-        simulation.add_algorithm('ParticleSwarmAlgorithm', np=POPULATION_SIZE, n_fes=N_FES)
-        simulation.add_algorithm('BatAlgorithm', np=POPULATION_SIZE, n_fes=N_FES)
-
-        # create folder to store results
-        result_dir_path = os.path.join(RESULT_DIR, datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
+        result_dir_path = os.path.join(config_data['saveToDir'], datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
         os.mkdir(path=result_dir_path)
 
-        simulation.add_save_option(ConsoleOutputSaveOption())
-        simulation.add_save_option(GraphOutputSaveOption(dir_path=result_dir_path, file_name='graph123'))
-        simulation.add_save_option(TextOutputSaveOption(dataset=dataset, dir_path=result_dir_path, file_name='textFile123'))
-        simulation.add_save_option(GifOutputSaveOption(dataset=dataset, dir_path=result_dir_path))
+        simulation = Simulation(
+            dataset=dataset,
+            n_fes=config_data['n_fes'],
+            np=config_data['np'],
+            save_to_dir=result_dir_path
+        )
 
-        simulation.run(sort_by_best=SortAttribute.FITNESS)
+        for algorithm in config_data['algorithms']:
+            simulation.add_algorithm(algorithm)
+
+        save_opt_configs = [OutputOptionConfig(class_name=config['class'],
+                                               included_kwargs=config['included_kwargs'])
+                            for config in config_data['outputOptions']]
+
+        for output_option in save_opt_configs:
+            simulation.add_save_option(output_option)
+
+        simulation.run(sort_by_best=SortAttribute[config_data['sortByBest'].lower()])
 
     except Exception as e:
-        print(e)
+        print('Execution stopped with error: {0}'.format(str(e)))

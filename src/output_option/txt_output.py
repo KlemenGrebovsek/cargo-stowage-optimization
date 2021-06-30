@@ -2,22 +2,21 @@ import datetime
 import os
 
 from src.model.dataset import Dataset
-from src.save_option.save_option import SaveOptionInterface
+from src.output_option.output_option import OutputOptionInterface
 
 
-class TextOutputSaveOption(SaveOptionInterface):
+class TextOutputOption(OutputOptionInterface):
 
-    def __init__(self, dir_path: str, file_name: str, dataset: Dataset):
+    def __init__(self, **kwargs):
         """
         Args:
-            file_name: File name without file extension.
             dataset: Used dataset.
             dir_path: Path to dir.
         """
 
-        self._dir_path: str = dir_path
-        self._file_name: str = file_name
-        self._dataset = dataset
+        self._dir_path:     str = kwargs['dir_path']
+        self._dataset:      Dataset = kwargs['dataset']
+        self._file_name:    str = 'results'
 
     def save(self, simulation_results: list):
         """ Saves results as txt file.

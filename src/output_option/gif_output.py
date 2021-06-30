@@ -3,7 +3,7 @@ import os
 from src.domain.cargo_space import CargoSpace
 from src.model.dataset import Dataset
 from src.model.simulation_run_info import SimulationRunInfo
-from src.save_option.save_option import SaveOptionInterface
+from src.output_option.output_option import OutputOptionInterface
 
 from PIL import Image, ImageDraw, ImageFont
 import matplotlib.font_manager as fm
@@ -17,18 +17,18 @@ def _calc_we_dist(total_w: int, col_we: int) -> int:
     return round((100 * col_we) / total_w)
 
 
-class GifOutputSaveOption(SaveOptionInterface):
+class GifOutputOption(OutputOptionInterface):
 
-    def __init__(self, dir_path: str, dataset: Dataset):
+    def __init__(self, **kwargs):
         """
         Args:
             dataset: Used dataset.
             dir_path: Path to dir.
         """
 
-        self._dir_path: str = dir_path
-        self._file_name: str = ''
-        self._dataset = dataset
+        self._dir_path:     str = kwargs['dir_path']
+        self._file_name:    str = ''
+        self._dataset:      Dataset = kwargs['dataset']
 
     def save(self, simulation_results: list):
         """ Save simulation as gif file.
@@ -96,7 +96,7 @@ class GifOutputSaveOption(SaveOptionInterface):
 
             draw_obj.text((x, 15), 'Station number: %s' % station, fill='black', font=big_font)
 
-            draw_obj.text((x, 50), 'Cargo space before station', fill='black', font=big_font)
+            draw_obj.text((x, 50), 'Before station', fill='black', font=big_font)
 
             draw_obj.line(((x_line, y + 35), (x_line, y - (25 * self._dataset.height))), fill=50, width=2)
 
@@ -105,9 +105,9 @@ class GifOutputSaveOption(SaveOptionInterface):
             dr_x = 30 + (35 * self._dataset.width) + (5 * self._dataset.width)
             dr_y = stat_image.height - 65
 
-            draw_obj.text((dr_x, 50), 'Cargo space after station', fill='black', font=big_font)
+            draw_obj.text((dr_x, 50), 'After station', fill='black', font=big_font)
 
-            m, l, col_we_sum = cargo_space.simulate_stop_at_station(station, packages_by_station[station - 1])
+            col_we_sum = cargo_space.simulate_stop_at_station(station, packages_by_station[station - 1]).weight_dist
 
             self._draw_cs(draw_obj, cargo_space, dr_x, dr_y, small_font, col_we_sum, we_gr)
 

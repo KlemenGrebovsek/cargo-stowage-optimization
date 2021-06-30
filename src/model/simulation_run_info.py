@@ -1,4 +1,4 @@
-from src.model.simulation_result import SimulationResult
+from src.model.simulation_result import OptimizationResult
 
 
 class SimulationRunInfo:
@@ -6,7 +6,7 @@ class SimulationRunInfo:
     """
 
     def __init__(self, completed: bool, has_error: bool, error_msg: str, execution_time: float,
-                 result: SimulationResult):
+                 result: OptimizationResult):
         """
         Args:
             completed: Indicates whether optimization ran to completion without any error.
@@ -20,7 +20,7 @@ class SimulationRunInfo:
         self._has_error:        bool = has_error
         self._error_msg:        str = error_msg
         self._execution_time:   float = execution_time
-        self._result:           SimulationResult = result
+        self._result:           OptimizationResult = result
 
     @property
     def is_completed(self) -> bool:
@@ -39,5 +39,5 @@ class SimulationRunInfo:
         return self._execution_time
 
     @property
-    def result(self) -> SimulationResult:
+    def result(self) -> OptimizationResult:
         return self._result

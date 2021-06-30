@@ -6,11 +6,6 @@ from src.dataset.reader.csv_reader import CSVDatasetReader
 from src.dataset.writer.csv_writer import CSVDatasetWriter
 
 
-def clear_if_exists(file_path: str):
-    if os.path.exists(file_path):
-        os.remove(file_path)
-
-
 class CSVWriterTest(unittest.TestCase):
 
     def test_invalid_path(self):
@@ -42,7 +37,7 @@ class CSVWriterTest(unittest.TestCase):
         except ValueError as e:
             self.fail(e)
         finally:
-            clear_if_exists('../../resource/test_valid_path_filename.csv')
+            delete_if_exists('../../resource/test_valid_path_filename.csv')
 
     def test_duplicate_file(self):
         try:
@@ -56,7 +51,7 @@ class CSVWriterTest(unittest.TestCase):
         except ValueError:
             pass
         finally:
-            clear_if_exists('../../resource/test_duplicate_file.csv')
+            delete_if_exists('../../resource/test_duplicate_file.csv')
 
     def test_file_content(self):
         try:
@@ -88,4 +83,9 @@ class CSVWriterTest(unittest.TestCase):
         except ValueError as e:
             self.fail(e)
         finally:
-            clear_if_exists('../../resource/test_file_content.csv')
+            delete_if_exists('../../resource/test_file_content.csv')
+
+
+def delete_if_exists(file_path: str):
+    if os.path.exists(file_path):
+        os.remove(file_path)

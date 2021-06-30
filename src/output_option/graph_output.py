@@ -3,20 +3,19 @@ from matplotlib.pyplot import figure
 import matplotlib.pyplot as plt
 from textwrap import wrap
 
-from src.save_option.save_option import SaveOptionInterface
+from src.output_option.output_option import OutputOptionInterface
 
 
-class GraphOutputSaveOption(SaveOptionInterface):
+class GraphOutputOption(OutputOptionInterface):
 
-    def __init__(self, dir_path: str, file_name: str):
+    def __init__(self, **kwargs):
         """
         Args:
-            file_name: File name without file extension.
             dir_path: Path to dir.
         """
 
-        self._dir_path: str = dir_path
-        self._file_name: str = file_name
+        self._dir_path:     str = kwargs['dir_path']
+        self._file_name:    str = 'results'
 
     def save(self, simulation_results: list):
         """ Saves results as graph into png file.
