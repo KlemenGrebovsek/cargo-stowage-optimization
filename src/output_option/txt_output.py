@@ -2,10 +2,10 @@ import datetime
 import os
 
 from src.model.dataset import Dataset
-from src.save_option.save_option import SaveOptionInterface
+from src.output_option.output_option import OutputOptionInterface
 
 
-class TextOutputSaveOption(SaveOptionInterface):
+class TextOutputOption(OutputOptionInterface):
 
     def __init__(self, **kwargs):
         """

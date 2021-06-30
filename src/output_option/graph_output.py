@@ -3,10 +3,10 @@ from matplotlib.pyplot import figure
 import matplotlib.pyplot as plt
 from textwrap import wrap
 
-from src.save_option.save_option import SaveOptionInterface
+from src.output_option.output_option import OutputOptionInterface
 
 
-class GraphOutputSaveOption(SaveOptionInterface):
+class GraphOutputOption(OutputOptionInterface):
 
     def __init__(self, **kwargs):
         """

@@ -3,7 +3,7 @@ import os
 from src.domain.cargo_space import CargoSpace
 from src.model.dataset import Dataset
 from src.model.simulation_run_info import SimulationRunInfo
-from src.save_option.save_option import SaveOptionInterface
+from src.output_option.output_option import OutputOptionInterface
 
 from PIL import Image, ImageDraw, ImageFont
 import matplotlib.font_manager as fm
@@ -17,7 +17,7 @@ def _calc_we_dist(total_w: int, col_we: int) -> int:
     return round((100 * col_we) / total_w)
 
 
-class GifOutputSaveOption(SaveOptionInterface):
+class GifOutputOption(OutputOptionInterface):
 
     def __init__(self, **kwargs):
         """
@@ -107,7 +107,7 @@ class GifOutputSaveOption(SaveOptionInterface):
 
             draw_obj.text((dr_x, 50), 'After station', fill='black', font=big_font)
 
-            m, l, col_we_sum = cargo_space.simulate_stop_at_station(station, packages_by_station[station - 1])
+            col_we_sum = cargo_space.simulate_stop_at_station(station, packages_by_station[station - 1]).weight_dist
 
             self._draw_cs(draw_obj, cargo_space, dr_x, dr_y, small_font, col_we_sum, we_gr)
 

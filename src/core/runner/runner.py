@@ -8,12 +8,12 @@ class Runner:
 
     @staticmethod
     def run(alg_obj) -> SimulationRunInfo:
-        """Starts optimization with the genetic algorithm and returns run details.
+        """Starts optimization with the genetic algorithm.
 
         Args:
             alg_obj: Genetic algorithm object.
 
-        Returns: Object containing info about optimization.
+        Returns: SimulationRunInfo obj containing info about optimization run.
         """
 
         try:

@@ -1,7 +1,7 @@
-from src.save_option.save_option import SaveOptionInterface
+from src.output_option.output_option import OutputOptionInterface
 
 
-class ConsoleOutputSaveOption(SaveOptionInterface):
+class ConsoleOutputOption(OutputOptionInterface):
 
     def __init__(self, **kwargs):
         pass
@@ -15,6 +15,7 @@ class ConsoleOutputSaveOption(SaveOptionInterface):
         Returns: void
         """
 
+        print(' ')
         print('+---------------------------------')
 
         for run_result in simulation_results:

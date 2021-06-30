@@ -16,7 +16,7 @@ def generate_data_set():
     try:
         generator = BaseDatasetGenerator()
         csv_writer = CSVDatasetWriter()
-        new_ds = generator.make(title='testSet3', pack_c=54, stat_n=5, cargo_dim=5)
+        new_ds = generator.make(title='testSet3', pack_c=225, stat_n=5, cargo_dim=10)
         csv_writer.write(dir_path='../datasets', file_name='testSet3', dataset=new_ds)
     except Exception as error:
         print(str(error))

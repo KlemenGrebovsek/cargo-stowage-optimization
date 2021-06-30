@@ -10,11 +10,11 @@ from NiaPy.algorithms.other import *
 
 # Output options
 from src.model.output_opt_config import OutputOptionConfig
-from src.save_option.save_option import SaveOptionInterface
-from src.save_option.console_output import ConsoleOutputSaveOption
-from src.save_option.txt_output import TextOutputSaveOption
-from src.save_option.graph_output import GraphOutputSaveOption
-from src.save_option.gif_output import GifOutputSaveOption
+from src.output_option.output_option import OutputOptionInterface
+from src.output_option.console_output import ConsoleOutputOption
+from src.output_option.txt_output import TextOutputOption
+from src.output_option.graph_output import GraphOutputOption
+from src.output_option.gif_output import GifOutputOption
 
 from src.core.runner.runner import Runner
 from src.core.simulation.simulation_errors import InvalidAlgorithmName, InvalidSaveOptionName, \
