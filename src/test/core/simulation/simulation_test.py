@@ -89,7 +89,7 @@ class SimulationTest(unittest.TestCase):
         try:
             dataset = Dataset('name', 30, 5, 5, 5, [])
             simulation = Simulation(dataset=dataset, n_fes=30, np=5, save_to_dir='/notNeeded')
-            simulation.add_save_option(OutputOptionConfig(class_name='GraphOutputSaveOption', included_kwargs=[]))
+            simulation.add_save_option(OutputOptionConfig(class_name='GraphOutputOption', included_kwargs=[]))
             self.fail('Invalid save option kwargs should raise error')
         except InvalidSaveOptionName:
             pass
@@ -98,7 +98,7 @@ class SimulationTest(unittest.TestCase):
         try:
             dataset = Dataset('name', 30, 5, 5, 5, [])
             simulation = Simulation(dataset=dataset, n_fes=30, np=5, save_to_dir='/notNeeded')
-            simulation.add_save_option(OutputOptionConfig(class_name='GraphOutputSaveOption',
+            simulation.add_save_option(OutputOptionConfig(class_name='GraphOutputOption',
                                                           included_kwargs=['dir_path']))
 
         except InvalidSaveOptionName:
@@ -108,7 +108,7 @@ class SimulationTest(unittest.TestCase):
         try:
             dataset = Dataset('name', 30, 5, 5, 5, [])
             simulation = Simulation(dataset=dataset, n_fes=30, np=5, save_to_dir='/notNeeded')
-            simulation.add_save_option(OutputOptionConfig(class_name='ConsoleOutputSaveOption', included_kwargs=[]))
+            simulation.add_save_option(OutputOptionConfig(class_name='ConsoleOutputOption', included_kwargs=[]))
         except InvalidSaveOptionName:
             self.fail('Valid save option kwargs was not accepted.')
 
@@ -116,7 +116,7 @@ class SimulationTest(unittest.TestCase):
         try:
             dataset = Dataset('name', 30, 5, 5, 5, [])
             simulation = Simulation(dataset=dataset, n_fes=30, np=5, save_to_dir='../results')
-            simulation.add_save_option(OutputOptionConfig(class_name='ConsoleOutputSaveOption', included_kwargs=[]))
+            simulation.add_save_option(OutputOptionConfig(class_name='ConsoleOutputOption', included_kwargs=[]))
             simulation.run(sort_by_best=SortAttribute.fitness)
             self.fail("Simulation started with no algorithms")
         except InvalidSimulationInitialState:
@@ -137,7 +137,7 @@ class SimulationTest(unittest.TestCase):
             dataset = Dataset('name', 30, 5, 5, 5, [])
             simulation = Simulation(dataset=dataset, n_fes=0, np=5, save_to_dir='../results')
             simulation.add_algorithm('GreyWolfOptimizer')
-            simulation.add_save_option(OutputOptionConfig(class_name='ConsoleOutputSaveOption', included_kwargs=[]))
+            simulation.add_save_option(OutputOptionConfig(class_name='ConsoleOutputOption', included_kwargs=[]))
             simulation.run(sort_by_best=SortAttribute.fitness)
             self.fail("Simulation started with no algorithms")
         except InvalidSimulationInitialState:
@@ -148,7 +148,7 @@ class SimulationTest(unittest.TestCase):
             dataset = Dataset('name', 30, 5, 5, 5, [])
             simulation = Simulation(dataset=dataset, n_fes=30, np=0, save_to_dir='../results')
             simulation.add_algorithm('GreyWolfOptimizer')
-            simulation.add_save_option(OutputOptionConfig(class_name='ConsoleOutputSaveOption', included_kwargs=[]))
+            simulation.add_save_option(OutputOptionConfig(class_name='ConsoleOutputOption', included_kwargs=[]))
             simulation.run(sort_by_best=SortAttribute.fitness)
             self.fail("Simulation started with no algorithms")
         except InvalidSimulationInitialState:
@@ -159,7 +159,7 @@ class SimulationTest(unittest.TestCase):
             dataset = Dataset('name', 30, 5, 5, 5, [])
             simulation = Simulation(dataset=dataset, n_fes=30, np=5, save_to_dir='../results')
             simulation.add_algorithm('GreyWolfOptimizer')
-            simulation.add_save_option(OutputOptionConfig(class_name='ConsoleOutputSaveOption', included_kwargs=[]))
+            simulation.add_save_option(OutputOptionConfig(class_name='ConsoleOutputOption', included_kwargs=[]))
             simulation.run(sort_by_best=SortAttribute.fitness)
             self.fail("Simulation started with no algorithms")
         except InvalidSimulationInitialState:
@@ -170,7 +170,7 @@ class SimulationTest(unittest.TestCase):
             dataset = Dataset('name', 30, 5, 5, 5, [Package(id_num=1, station_in=1, station_out=3, weight=30)])
             simulation = Simulation(dataset=dataset, n_fes=30, np=5, save_to_dir='../results')
             simulation.add_algorithm('GreyWolfOptimizer')
-            simulation.add_save_option(OutputOptionConfig(class_name='ConsoleOutputSaveOption', included_kwargs=[]))
+            simulation.add_save_option(OutputOptionConfig(class_name='ConsoleOutputOption', included_kwargs=[]))
             simulation.run(sort_by_best=SortAttribute.fitness)
             self.fail("Simulation started with no algorithms")
         except InvalidSimulationInitialState:
@@ -188,7 +188,7 @@ class SimulationTest(unittest.TestCase):
 
             simulation = Simulation(dataset=dataset, n_fes=30, np=5, save_to_dir='../results')
             simulation.add_algorithm('GreyWolfOptimizer')
-            simulation.add_save_option(OutputOptionConfig(class_name='ConsoleOutputSaveOption', included_kwargs=[]))
+            simulation.add_save_option(OutputOptionConfig(class_name='ConsoleOutputOption', included_kwargs=[]))
             simulation.run(sort_by_best=SortAttribute.fitness)
             self.fail("Simulation started with no algorithms")
         except InvalidSimulationInitialState:
@@ -206,7 +206,7 @@ class SimulationTest(unittest.TestCase):
 
             simulation = Simulation(dataset=dataset, n_fes=30, np=5, save_to_dir='../results')
             simulation.add_algorithm('GreyWolfOptimizer')
-            simulation.add_save_option(OutputOptionConfig(class_name='ConsoleOutputSaveOption', included_kwargs=[]))
+            simulation.add_save_option(OutputOptionConfig(class_name='ConsoleOutputOption', included_kwargs=[]))
             simulation.run(sort_by_best=SortAttribute.fitness)
             self.fail("Simulation started with no algorithms")
         except InvalidSimulationInitialState:
@@ -224,7 +224,7 @@ class SimulationTest(unittest.TestCase):
 
             simulation = Simulation(dataset=dataset, n_fes=30, np=5, save_to_dir='../results')
             simulation.add_algorithm('GreyWolfOptimizer')
-            simulation.add_save_option(OutputOptionConfig(class_name='ConsoleOutputSaveOption', included_kwargs=[]))
+            simulation.add_save_option(OutputOptionConfig(class_name='ConsoleOutputOption', included_kwargs=[]))
             simulation.run(sort_by_best=SortAttribute.fitness)
             self.fail("Simulation started with no algorithms")
         except InvalidSimulationInitialState:
@@ -242,7 +242,7 @@ class SimulationTest(unittest.TestCase):
 
             simulation = Simulation(dataset=dataset, n_fes=30, np=5, save_to_dir='../invalidDir')
             simulation.add_algorithm('GreyWolfOptimizer')
-            simulation.add_save_option(OutputOptionConfig(class_name='ConsoleOutputSaveOption', included_kwargs=[]))
+            simulation.add_save_option(OutputOptionConfig(class_name='ConsoleOutputOption', included_kwargs=[]))
             simulation.run(sort_by_best=SortAttribute.fitness)
             self.fail("Simulation started with no algorithms")
         except InvalidSimulationInitialState:
