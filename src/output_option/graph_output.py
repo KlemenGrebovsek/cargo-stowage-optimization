@@ -18,8 +18,10 @@ class GraphOutputOption(OutputOptionInterface):
         self._file_name:    str = 'results'
 
     def save(self, simulation_results: list):
-        """ Saves results as graph into png file.
+        """ Saves simulation results as graph into .png file.
+
         Throws ValueError if invalid path or file name.
+
         Args:
             simulation_results: A list of simulation results.
 

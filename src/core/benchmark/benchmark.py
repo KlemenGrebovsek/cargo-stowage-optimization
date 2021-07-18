@@ -13,7 +13,7 @@ class BenchmarkC(object):
         self._dataset:                  Dataset = dataset
         self._packages_by_station:      list = [[] for _ in range(dataset.total_stations)]
 
-        # sort packages by station of loading
+        # Sort packages by station of loading
         for package in self._dataset.packages:
             self._packages_by_station[package.station_in - 1].append(package)
 

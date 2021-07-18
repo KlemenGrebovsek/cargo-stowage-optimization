@@ -3,7 +3,7 @@ from numpy import ndarray
 from src.domain.cs_column import Column
 import numpy as np
 
-from src.domain.stop_at_station_summary import StopAtStationSummary
+from src.model.stop_at_station_summary import StopAtStationSummary
 
 
 class CargoSpace(object):
@@ -20,7 +20,7 @@ class CargoSpace(object):
         return self._columns
 
     def simulate_stop_at_station(self, station_index: int, packages_to_load: list) -> StopAtStationSummary:
-        """ Simulates stop at station, unloads, loads packages and monitors activities and statuses.
+        """ Simulates stop at station, unloads, loads packages and monitors activities.
 
         Args:
             station_index: Current station index.

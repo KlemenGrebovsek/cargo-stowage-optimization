@@ -7,7 +7,7 @@ class ConsoleOutputOption(OutputOptionInterface):
         pass
 
     def save(self, simulation_results: list):
-        """ Prints results to console.
+        """Prints simulation results to the console.
 
         Args:
             simulation_results: A list of simulation results.

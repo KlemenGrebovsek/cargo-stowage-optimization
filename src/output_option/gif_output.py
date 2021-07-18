@@ -31,7 +31,7 @@ class GifOutputOption(OutputOptionInterface):
         self._dataset:      Dataset = kwargs['dataset']
 
     def save(self, simulation_results: list):
-        """ Save simulation as gif file.
+        """ Save best simulation result as .gif file.
         Throws ValueError if invalid path or file name.
 
         Args:

@@ -121,10 +121,10 @@ class Simulation:
                                                                                               config.included_kwargs))
 
     def run(self, sort_by_best: SortAttribute) -> None:
-        """Starts simulation and saves results with specified save options.
+        """Starts simulation.
 
         Args:
-            sort_by_best: Sort results by this attribute from the best to the worst one.
+            sort_by_best: Results are ordered by this attribute, from best to worst.
 
         Returns: void
         """

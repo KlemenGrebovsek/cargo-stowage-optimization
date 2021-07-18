@@ -14,6 +14,10 @@ class CSVDatasetWriter(DatasetWriterInterface):
             file_name: Dataset file name without file extension.
             dataset: Dataset to write.
             dir_path: Path to dir.
+
+        Throws:
+            ValueError
+
         Returns: Dataset from file.
         """
 

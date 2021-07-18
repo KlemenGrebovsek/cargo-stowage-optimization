@@ -51,7 +51,7 @@ class BaseDatasetGenerator(DatasetGeneratorInterface):
 
             in_index_start += 1
 
-        # perform final check, so indexes won't go out of bounds of columns
+        # Performs final check, so indexes won't go out of bounds for columns in cargo space.
         self._final_check(package_collection, stat_n, cargo_dim * cargo_dim)
 
         return Dataset(
@@ -109,7 +109,7 @@ class BaseDatasetGenerator(DatasetGeneratorInterface):
             packages_by_stat_in[package.station_in - 1].append(package)
 
         while station_num < stat_n + 1:
-            # remove for current station
+            # Remove for current station
             remove_counter, remove_size = 0, len(fake_cargo_space)
             while remove_counter < remove_size:
                 if fake_cargo_space[remove_counter].station_out == station_num:
@@ -118,9 +118,9 @@ class BaseDatasetGenerator(DatasetGeneratorInterface):
                 else:
                     remove_counter += 1
 
-            # load for station
+            # Load for station
             for package in packages_by_stat_in[station_num - 1]:
-                # add new
+                # Add new
                 if len(fake_cargo_space) + 1 > cargo_sp_size:
                     min_index = np.argmin(dist_by_station[0:station_num - 1])
                     package.set_station_in(min_index + 1)
@@ -130,10 +130,10 @@ class BaseDatasetGenerator(DatasetGeneratorInterface):
                 else:
                     fake_cargo_space.append(package)
 
-            # save size
+            # Save size
             dist_by_station[station_num - 1] += len(fake_cargo_space)
 
-            # redo process if packages where reordered
+            # Redo process if packages where reordered
             if redo_check:
                 redo_check, station_num, fake_cargo_space = False, 0, []
                 new_packages_by_stat_in = [[] for _ in range(stat_n)]

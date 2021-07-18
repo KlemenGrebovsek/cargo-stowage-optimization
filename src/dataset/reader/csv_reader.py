@@ -13,8 +13,7 @@ class CSVDatasetReader(DatasetReaderInterface):
         """Reads dataset from csv file.
 
         Throws:
-            ValueError if invalid path or file extension.
-            InvalidFileContentError if invalid file content.
+            ValueError, InvalidFileContentError
 
         Args:
             path: Path to dataset file.
